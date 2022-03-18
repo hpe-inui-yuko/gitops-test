@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-release
+  namespace: default
+spec:
+  project: default
+  source:
+    chart: argo-cd
+    repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: 4.0.0
+    helm:
+      releaseName: my-release
+      values: |
+        redis-ha:
+          enabled: true
+
+        controller:
+          enableStatefulSet: true
+
+        server:
+          autoscaling:
+            enabled: true
+            minReplicas: 4
+
+        repoServer:
+          autoscaling:
+            enabled: true
+            minReplicas: 2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+    - CreateNamespace=true

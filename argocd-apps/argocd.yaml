@@ -21,7 +21,7 @@ spec:
         server:
           autoscaling:
             enabled: true
-            minReplicas: 4
+            minReplicas: 2
 
         repoServer:
           autoscaling:
